@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>BON - Utang Warung v21.0.0</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 12px;
+      min-height: 100vh;
+      color: #2d3748;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    @media (min-width: 769px) {
+      body {
+        font-size: 22px;
+      }
+    }
+
+    .container {
+      max-width: 100%;
+      width: 100%;
+      margin: auto;
+      background: linear-gradient(145deg, #ffffff 0%, #f7fafc 100%);
+      border-radius: 28px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      color: white;
+      text-align: center;
+      padding: 20px 12px;
+      font-weight: 900;
+      font-size: 2.0em;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      line-height: 1.2;
+    }
+
+    @media (min-width: 769px) {
+      header {
+        font-size: 2.4em;
+        padding: 24px 16px;
+      }
+    }
+
+    .main-content {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.92);
+    }
+
+    @media (min-width: 769px) {
+      .main-content {
+        padding: 28px;
+      }
+    }
+
+    h2 {
+      margin: 16px 0 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 1.5em;
+      font-weight: 800;
+      border-left: 5px solid #764ba2;
+      padding-left: 12px;
+    }
+    h3 {
+      margin: 12px 0 8px;
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 1.4em;
+      font-weight: 700;
+      border-left: 5px solid #48bb78;
+      padding-left: 12px;
+    }
+
+    @media (min-width: 769px) {
+      h2 { font-size: 1.7em; margin: 20px 0 16px; }
+      h3 { font-size: 1.6em; margin: 16px 0 12px; }
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #805ad5, #6b46c0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 16px;
+    }
+    @media (min-width: 769px) {
+      label {
+        font-size: 20px;
+      }
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      margin-bottom: 14px;
+      border: 2px solid #c3dafe;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      background: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    @media (min-width: 769px) {
+      input, button {
+        padding: 16px;
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 18px;
+        border-radius: 20px;
+      }
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #9f7aea;
+      box-shadow: 0 0 0 3px rgba(159, 122, 234, 0.3);
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .btn-bon {
+      background: linear-gradient(135deg, #48bb78, #38a169, #2f855a);
+      color: white;
+    }
+    #simpanBonBtn {
+      background: linear-gradient(135deg, #4299e1, #3182ce, #2b6cb0);
+      color: white;
+      font-size: 17px;
+      padding: 14px;
+    }
+
+    @media (min-width: 769px) {
+      #simpanBonBtn {
+        font-size: 22px;
+        padding: 18px;
+      }
+    }
+
+    .pelanggan-item {
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+      padding: 16px;
+      margin: 12px 0;
+      border-radius: 20px;
+      border-left: 6px solid #9f7aea;
+      box-shadow: 0 4px 15px rgba(159, 122, 234, 0.15);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pelanggan-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 25px rgba(159, 122, 234, 0.25);
+    }
+
+    @media (min-width: 769px) {
+      .pelanggan-item {
+        padding: 20px;
+        margin: 16px 0;
+        border-radius: 24px;
+      }
+    }
+
+    .edit-nama-btn {
+      background: linear-gradient(135deg, #ed64a6, #d53f8c);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 14px;
+      cursor: pointer;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .edit-nama-btn:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    @media (min-width: 769px) {
+      .edit-nama-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        top: 16px;
+        right: 16px;
+      }
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: linear-gradient(145deg, #ffffff, #f7fafc);
+      padding: 24px;
+      border-radius: 24px;
+      width: 92%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
+      border: 1px solid rgba(159, 122, 234, 0.3);
+      font-size: 16px;
+    }
+
+    @media (min-width: 769px) {
+      .modal-content {
+        font-size: 20px;
+        padding: 28px;
+        max-width: 450px;
+      }
+    }
+
+    .hidden { display: none; }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 769px) {
+      .action-buttons {
+        gap: 14px;
+        margin-top: 18px;
+      }
+    }
+    .btn-bayar,
+    .btn-salin,
+    .btn-hapus,
+    .btn-bon-baru,
+    .btn-share {
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+      flex: 1;
+      min-width: 80px;
+      transition: all 0.3s ease;
+    }
+
+    @media (min-width: 769px) {
+      .btn-bayar,
+      .btn-salin,
+      .btn-hapus,
+      .btn-bon-baru,
+      .btn-share {
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 16px;
+        min-width: 100px;
+      }
+    }
+
+    .btn-bayar { background: linear-gradient(135deg, #4299e1, #3182ce); color: white; }
+    .btn-salin { background: linear-gradient(135deg, #f6ad55, #ed8936); color: white; }
+    .btn-hapus { background: linear-gradient(135deg, #fc8181, #f56565); color: white; }
+    .btn-bon-baru { background: linear-gradient(135deg, #48bb78, #38a169); color: white; }
+    .btn-share { background: linear-gradient(135deg, #9f7aea, #805ad5); color: white; }
+
+    #cariPelanggan {
+      margin-top: 10px;
+      margin-bottom: 14px;
+      border-color: #c3dafe;
+      font-size: 16px;
+      padding: 12px;
+      background: white;
+    }
+    @media (min-width: 769px) {
+      #cariPelanggan {
+        font-size: 20px;
+        padding: 14px;
+      }
+    }
+    .bon-barang-list {
+      margin-top: 12px;
+      padding: 16px;
+      background: linear-gradient(135deg, #ebf8ff, #e6fffa);
+      border-radius: 16px;
+      border-left: 5px solid #4299e1;
+    }
+
+    .bon-barang-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 15px;
+      align-items: center;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    @media (min-width: 769px) {
+      .bon-barang-item {
+        font-size: 18px;
+        padding: 10px 0;
+      }
+    }
+
+    .hapus-barang-btn {
+      background: linear-gradient(135deg, #f56565, #e53e3e);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .hapus-barang-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @media (min-width: 769px) {
+      .hapus-barang-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 16px;
+        margin-left: 12px;
+      }
+    }
+    .timestamp {
+      font-size: 13px;
+      color: #718096;
+      font-style: italic;
+      margin-top: 6px;
+      display: block;
+    }
+    .bon-timestamp {
+      background: linear-gradient(135deg, #ebf8ff, #e6fffa);
+      padding: 8px 12px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      border-left: 3px solid #4299e1;
+      font-size: 13px;
+    }
+    @media (min-width: 769px) {
+      .timestamp, .bon-timestamp {
+        font-size: 16px;
+      }
+    }
+
+    .backup-section {
+      background: linear-gradient(135deg, #faf5ff, #f3e8ff);
+      padding: 20px;
+      border-radius: 20px;
+      margin: 20px 0;
+      border: 2px dashed #9f7aea;
+      text-align: center;
+    }
+
+    @media (min-width: 769px) {
+      .backup-section {
+        padding: 28px;
+        margin: 28px 0;
+        border-width: 3px;
+      }
+    }
+
+    .backup-section h2 {
+      margin-bottom: 12px;
+      font-size: 1.4em;
+      background: linear-gradient(135deg, #805ad5, #6b46c0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    @media (min-width: 769px) {
+      .backup-section h2 {
+        font-size: 1.7em;
+        margin-bottom: 16px;
+      }
+    }
+    .backup-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .backup-btn {
+      padding: 12px 16px;
+      border-radius: 16px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+      flex: 1;
+      min-width: 140px;
+      transition: all 0.3s ease;
+    }
+
+    .backup-btn:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.05);
+    }
+
+    @media (min-width: 769px) {
+      .backup-btn {
+        padding: 16px 24px;
+        font-size: 18px;
+        min-width: 180px;
+      }
+    }
+
+    .btn-backup {
+      background: linear-gradient(135deg, #9f7aea, #805ad5);
+      color: white;
+    }
+
+    .backup-note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #6b46c0;
+      line-height: 1.4;
+    }
+    @media (min-width: 769px) {
+      .backup-note {
+        font-size: 16px;
+        margin-top: 16px;
+      }
+    }
+    .share-modal {
+      background: linear-gradient(145deg, #ffffff, #f7fafc);
+      padding: 24px;
+      border-radius: 24px;
+      width: 92%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px -10px rgba(0,0,0,0.3);
+      border: 1px solid rgba(246, 173, 85, 0.3);
+      font-size: 16px;
+      position: relative;
+    }
+    @media (min-width: 769px) {
+      .share-modal {
+        font-size: 20px;
+        padding: 28px;
+        max-width: 450px;
+      }
+    }
+    .share-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (min-width: 769px) {
+      .share-options {
+        gap: 16px;
+        margin-top: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      }
+    }
+
+    .share-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #fffaf0, #feebc8);
+      border: 2px solid #f6ad55;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    @media (min-width: 769px) {
+      .share-option {
+        padding: 16px;
+        border-radius: 20px;
+      }
+    }
+    .share-option:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(246, 173, 85, 0.3);
+      background: linear-gradient(135deg, #feebc8, #fbd38d);
+    }
+    .share-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+
+    @media (min-width: 769px) {
+      .share-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .share-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      color: #744210;
+    }
+
+    @media (min-width: 769px) {
+      .share-label {
+        font-size: 16px;
+      }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, #f56565, #e53e3e);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    @media (min-width: 769px) {
+      .close-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+        top: 16px;
+        right: 16px;
+      }
+    }
+    .highlight-info {
+      font-weight: bold;
+      font-size: 1.5em;
+      margin: 8px 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    @media (min-width: 769px) {
+      .highlight-info {
+        font-size: 2em;
+      }
+    }
+
+    .salin-semua-btn {
+      background: linear-gradient(135deg, #38b2ac, #319795, #2c7a7b);
+      color: white;
+      margin-top: 10px;
+    }
+
+    .salin-semua-btn:hover {
+      background: linear-gradient(135deg, #319795, #2c7a7b, #285e61);
+    }
+
+    .status-lunas {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: bold;
+    }
+
+    .autocomplete-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 2px solid #c3dafe;
+      border-top: none;
+      border-radius: 0 0 16px 16px;
+      z-index: 100;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .autocomplete-item {
+      padding: 10px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #e2e8f0;
+      transition: background 0.2s;
+      color: #2d3748;
+    }
+    .autocomplete-item:hover {
+      background: linear-gradient(90deg, #e9d8fd, #f3e8ff);
+    }
+
+    .autocomplete-item:last-child {
+      border-bottom: none;
+    }
+
+    .autocomplete-highlight {
+      background: linear-gradient(135deg, #9f7aea, #805ad5);
+      color: white;
+      font-weight: bold;
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 40px;
+      z-index: 2000;
+      font-weight: bold;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    /* AUTH STYLES */
+    .auth-header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #2d3748, #1a202c);
+      color: #ffffff;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    @media (min-width: 769px) {
+      .auth-header-container {
+        font-size: 18px;
+        padding: 14px 28px;
+      }
+    }
+    .btn-auth-logout {
+      background: linear-gradient(135deg, #e53e3e, #c53030);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 30px;
+      width: auto;
+      margin: 0;
+      font-size: 12px;
+    }
+    @media (min-width: 769px) {
+      .btn-auth-logout {
+        padding: 8px 20px;
+        font-size: 15px;
+      }
+    }
+    .auth-screen {
+      padding: 28px 20px;
+      max-width: 450px;
+      margin: auto;
+      width: 100%;
+    }
+    .auth-tab-nav {
+      display: flex;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .auth-tab-item {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #718096;
+      transition: all 0.3s ease;
+    }
+    .auth-tab-item.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      border-bottom: 4px solid #764ba2;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .remember-me input {
+      width: auto;
+      margin: 0;
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+    .remember-me label {
+      margin: 0;
+      font-weight: normal;
+      cursor: pointer;
+      background: none;
+      -webkit-background-clip: unset;
+      background-clip: unset;
+      color: #4a5568;
+    }
+
+    #authScreenSection .btn-bon {
+      background: linear-gradient(135deg, #4299e1, #3182ce);
+      color: white;
+    }
+
+    #authScreenSection h2 {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    #storageStatusBadge {
+      background: linear-gradient(135deg, #48bb78, #38a169);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="authHeaderBar" class="auth-header-container hidden">
+      <span>👤 Pengguna: <span id="currentUsernameLabel">-</span></span>
+      <span id="storageStatusBadge">💾 Auto Storage</span>
+      <button class="btn-auth-logout" onclick="executeLogout()">🚪 Keluar</button>
+    </div>
+
+    <header>BON v21.0.0</header>
+
+    <div id="authScreenSection" class="auth-screen">
+      <div class="auth-tab-nav">
+        <div id="tabLogin" class="auth-tab-item active" onclick="switchAuthTab('login')">Masuk</div>
+        <div id="tabRegister" class="auth-tab-item" onclick="switchAuthTab('register')">Daftar Akun</div>
+        <div id="tabForgot" class="auth-tab-item" onclick="switchAuthTab('forgot')">Lupa Sandi</div>
+      </div>
+      
+      <div id="authFormTitle"><h2>🔑 Masuk Aplikasi</h2></div>
+      
+      <div id="formFieldUsername">
+        <label>Nama Pengguna (Username):</label>
+        <input type="text" id="authUsername" maxlength="50" placeholder="Masukkan username...">
+      </div>
+      
+      <div id="formFieldPassword">
+        <label id="labelAuthPassword">Kata Sandi (Password):</label>
+        <input type="password" id="authPassword" maxlength="50" placeholder="Masukkan password...">
+      </div>
+
+      <div class="remember-me" id="rememberMeDiv">
+        <input type="checkbox" id="rememberMeCheckbox">
+        <label for="rememberMeCheckbox">💾 Ingat Saya (Simpan otomatis username & password)</label>
+      </div>
+
+      <div id="securityQuestionsSection" class="hidden">
+        <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 12px; border-radius: 16px; margin: 12px 0; border: 1px solid #f6ad55; font-size: 14px; font-weight: bold; color: #744210;">
+          🔒 Verifikasi Dua Langkah (Security Questions)
+        </div>
+        <label>1. Nama Hewan Peliharaan Anda:</label>
+        <input type="text" id="qPet" maxlength="100" placeholder="Contoh: Kucing Cemong">
+        
+        <label>2. Hobi:</label>
+        <input type="text" id="qHobby" maxlength="100" placeholder="Contoh: Main Game">
+        
+        <label>3. Makanan Favorit:</label>
+        <input type="text" id="qFood" maxlength="100" placeholder="Contoh: Nasi Goreng">
+      </div>
+      
+      <button id="btnAuthSubmit" class="btn-bon" onclick="handleAuthSubmit()">🔑 Masuk Sekarang</button>
+    </div>
+
+    <div id="mainAppSection" class="main-content hidden">      
+      <h2>📝 Buat Bon Baru</h2>
+      <label>Nama Pelanggan:</label>
+      <div class="autocomplete-container">
+        <input type="text" id="namaPelanggan" maxlength="100" placeholder="Siapa yang nge-bon?" oninput="showAutocomplete('pelanggan')" onfocus="showAutocomplete('pelanggan')">
+        <div id="autocompleteListPelanggan" class="autocomplete-list hidden"></div>
+      </div>
+      <label>Nama Barang:</label>
+      <div class="autocomplete-container">
+        <input type="text" id="namaBarangManual" maxlength="100" placeholder="Contoh: Rokok Sampoerna" oninput="showAutocomplete('barang')" onfocus="showAutocomplete('barang')">
+        <div id="autocompleteListBarang" class="autocomplete-list hidden"></div>
+      </div>
+
+      <label>Harga (Rp):</label>
+      <input type="number" id="hargaBarangManual" min="0" placeholder="Contoh: 25000">
+
+      <label>Jumlah:</label>
+      <input type="number" id="jumlahBarangManual" min="1" value="1" placeholder="Contoh: 2">
+
+      <button class="btn-bon" onclick="tambahBarangKeBon()">➕ Tambah ke Bon</button>
+
+      <h3>🛒 Barang di Bon Ini:</h3>
+      <div id="keranjangBon">Kosong</div>
+      <button id="simpanBonBtn" onclick="simpanBonBaru()">💾 Simpan Bon</button>
+
+      <h2>👥 Nama Pelanggan (Total Utang)</h2>
+      
+      <div style="background: linear-gradient(135deg, #ebf8ff, #e6fffa); padding: 12px; border-radius: 16px; margin: 12px 0; font-weight: bold; background: linear-gradient(135deg, #4299e1, #3182ce); -webkit-background-clip: text; background-clip: text; color: transparent;">
+        📦 Jumlah Barang: <span id="jumlahBarang">0</span>
+      </div>
+      
+      <input type="text" id="cariPelanggan" maxlength="100" placeholder="Cari nama pelanggan..." oninput="debouncedFilterPelanggan()">
+      <div id="daftarPelanggan">Belum ada yang ngebon.</div>
+
+      <div class="backup-section">
+        <h2>📥 Backup & Restore Data (Tanpa Batasan)</h2>
+        <div class="backup-buttons">
+          <button class="backup-btn btn-backup" onclick="eksporKeJson()">
+            💾 Ekspor ke JSON
+          </button>
+          <button class="backup-btn btn-backup" onclick="simpanKeGoogleDrive()" style="background:linear-gradient(135deg, #4285F4, #34A853);color:white;">
+            ☁️ Simpan ke Google Drive
+          </button>
+          <label class="backup-btn btn-backup" style="cursor:pointer;background:linear-gradient(135deg, #f6ad55, #ed8936);color:white;padding:12px 16px;border-radius:16px;min-width:140px;display:inline-block;">
+            📤 Impor JSON
+            <input type="file" id="imporJson" accept=".json" onchange="imporData(this.files[0])" style="display:none;">
+          </label>
+        </div>
+        <p class="backup-note">
+          • <strong>Penyimpanan Otomatis Hybrid</strong> → Data tak terbatas, aman & cepat<br>
+          • Klik "Ekspor ke JSON" untuk backup manual<br>
+          • Klik "Simpan ke Google Drive" → file dibuat dan siap disimpan<br>
+          • Impor JSON untuk memulihkan data kapan saja
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalEditNama" class="hidden modal">
+    <div class="modal-content">
+      <h3 style="margin-bottom:16px;background:linear-gradient(135deg, #805ad5, #6b46c0);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;text-align:center;">✏️ Edit Nama Pelanggan</h3>
+      <input type="text" id="inputNamaBaru" maxlength="100" placeholder="Nama baru" style="width:100%;padding:12px;border:2px solid #c3dafe;border-radius:16px;margin-bottom:14px;">
+      <input type="hidden" id="namaLama">
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn-bon" style="flex:1;padding:12px;" onclick="simpanEditNama()">✔️ Simpan</button>
+        <button style="background:linear-gradient(135deg, #f56565, #e53e3e);color:white;flex:1;padding:12px;border:none;border-radius:16px;" onclick="tutupModal('modalEditNama')">❌ Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="shareModal" class="hidden modal">
+    <div class="share-modal">
+      <div class="close-btn" onclick="tutupModal('shareModal')">✕</div>
+      <h3 style="margin-bottom:16px;background:linear-gradient(135deg, #ed8936, #dd6b20);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;text-align:center;">📤 Bagikan Ringkasan</h3>
+      <p style="text-align:center;margin-bottom:16px;color:#4a5568;">Pilih cara berbagi:</p>
+      <div class="share-options">
+        <div class="share-option" onclick="bagikanVia('whatsapp')">
+          <div class="share-icon">💬</div>
+          <div class="share-label">WhatsApp</div>
+        </div>
+        <div class="share-option" onclick="bagikanVia('email')">
+          <div class="share-icon">✉️</div>
+          <div class="share-label">Email</div>
+        </div>
+        <div class="share-option" onclick="bagikanVia('sms')">
+          <div class="share-icon">📱</div>
+          <div class="share-label">SMS</div>
+        </div>
+        <div class="share-option" onclick="bagikanVia('lainnya')">
+          <div class="share-icon">🔗</div>
+          <div class="share-label">Lainnya</div>
+        </div>
+      </div>
+      <input type="hidden" id="shareNamaPelanggan">
+    </div>
+  </div>
+
+  <script>
+    // ==================== VERSI 21.0.0 - HYBRID STORAGE OTOMATIS (TANPA BATASAN) ====================
+    
+    // === GLOBAL VARIABLES ===
+    let semuaBon = [];
+    let pembayaran = [];
+    let keranjang = [];
+    let activeUser = null;
+    let currentAuthTab = 'login';
+    let dbInstance = null;
+    let useIndexedDB = false;
+    const DB_NAME = 'BonWarungDB';
+    const DB_VERSION = 3;
+    
+    // === UTILITIES ===
+    function safeString(str, maxlength = 100) {
+      if (str == null) return '';
+      let clean = String(str)
+        .replace(/\r\n/g, ' ')
+        .replace(/\n/g, ' ')
+        .replace(/\t/g, ' ')
+        .trim()
+        .substring(0, maxlength);
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' };
+      return clean.replace(/[&<>"']/g, s => map[s]);
+    }
+
+    function showToast(message, isError = false) {
+      const existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message.substring(0, 200);
+      toast.style.background = isError ? 'linear-gradient(135deg, #f56565, #e53e3e)' : 'linear-gradient(135deg, #48bb78, #38a169)';
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+      }, 3000);
+    }
+    
+    let filterTimeout;
+    function debouncedFilterPelanggan() {
+      clearTimeout(filterTimeout);
+      filterTimeout = setTimeout(filterPelanggan, 300);
+    }
+
+    function safeParseJSON(str) {
+      try {
+        return JSON.parse(str);
+      } catch {
+        return null;
+      }
+    }
+
+    function getFullTimestamp() {
+      return new Date().toLocaleString('id-ID', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).replace('pukul ', 'pukul ');
+    }
+
+    function isValidBon(bon) {
+      return bon &&
+        typeof bon.namaPelanggan === 'string' &&
+        bon.namaPelanggan.trim().length > 0 &&
+        typeof bon.total === 'number' &&
+        bon.total >= 0 &&
+        Array.isArray(bon.items) &&
+        typeof bon.waktu === 'string';
+    }
+    
+    function isValidPembayaran(p) {
+      return p &&
+        typeof p.namaPelanggan === 'string' &&
+        p.namaPelanggan.trim().length > 0 &&
+        typeof p.jumlah === 'number' &&
+        p.jumlah > 0 &&
+        typeof p.waktu === 'string';
+    }
+
+    // ==================== INDEXEDDB MANAGER (OTOMATIS, TANPA BATASAN) ====================
+    async function initIndexedDB() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) {
+          useIndexedDB = false;
+          resolve(false);
+          return;
+        }
+        
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        
+        request.onerror = () => {
+          useIndexedDB = false;
+          resolve(false);
+        };
+        
+        request.onsuccess = (event) => {
+          dbInstance = event.target.result;
+          useIndexedDB = true;
+          dbInstance.onversionchange = () => {
+            if (dbInstance) dbInstance.close();
+          };
+          resolve(true);
+        };
+        
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (db.objectStoreNames.contains('userData')) db.deleteObjectStore('userData');
+          if (db.objectStoreNames.contains('users')) db.deleteObjectStore('users');
+          if (db.objectStoreNames.contains('hiddenBarang')) db.deleteObjectStore('hiddenBarang');
+          
+          db.createObjectStore('userData', { keyPath: 'username' });
+          db.createObjectStore('users', { keyPath: 'username' });
+          db.createObjectStore('hiddenBarang', { keyPath: 'username' });
+        };
+      });
+    }
+    
+    async function saveToIndexedDB(username, bonData, paymentData) {
+      if (!useIndexedDB || !dbInstance) return false;
+      return new Promise((resolve) => {
+        try {
+          const transaction = dbInstance.transaction(['userData'], 'readwrite');
+          const store = transaction.objectStore('userData');
+          store.put({
+            username: username.toLowerCase(),
+            semuaBon: bonData,
+            pembayaran: paymentData,
+            lastUpdated: new Date().toISOString()
+          });
+          transaction.oncomplete = () => resolve(true);
+          transaction.onerror = () => resolve(false);
+        } catch(e) { resolve(false); }
+      });
+    }
+    
+    async function loadFromIndexedDB(username) {
+      if (!useIndexedDB || !dbInstance) return null;
+      return new Promise((resolve) => {
+        try {
+          const transaction = dbInstance.transaction(['userData'], 'readonly');
+          const store = transaction.objectStore('userData');
+          const request = store.get(username.toLowerCase());
+          request.onsuccess = () => resolve(request.result ? { semuaBon: request.result.semuaBon || [], pembayaran: request.result.pembayaran || [] } : null);
+          request.onerror = () => resolve(null);
+        } catch(e) { resolve(null); }
+      });
+    }
+    
+    async function saveHiddenToIndexedDB(username, hiddenMap) {
+      if (!useIndexedDB || !dbInstance) return false;
+      return new Promise((resolve) => {
+        try {
+          const transaction = dbInstance.transaction(['hiddenBarang'], 'readwrite');
+          const store = transaction.objectStore('hiddenBarang');
+          store.put({ username: username.toLowerCase(), hiddenMap: hiddenMap });
+          transaction.oncomplete = () => resolve(true);
+          transaction.onerror = () => resolve(false);
+        } catch(e) { resolve(false); }
+      });
+    }
+    
+    async function loadHiddenFromIndexedDB(username) {
+      if (!useIndexedDB || !dbInstance) return null;
+      return new Promise((resolve) => {
+        try {
+          const transaction = dbInstance.transaction(['hiddenBarang'], 'readonly');
+          const store = transaction.objectStore('hiddenBarang');
+          const request = store.get(username.toLowerCase());
+          request.onsuccess = () => resolve(request.result ? request.result.hiddenMap : null);
+          request.onerror = () => resolve(null);
+        } catch(e) { resolve(null); }
+      });
+    }
+    
+    async function saveUsersToIndexedDB(usersData) {
+      if (!useIndexedDB || !dbInstance) return false;
+      return new Promise((resolve) => {
+        try {
+          const transaction = dbInstance.transaction(['users'], 'readwrite');
+          const store = transaction.objectStore('users');
+          for (const [key, value] of Object.entries(usersData)) {
+            store.put({ username: key, userData: value });
+          }
+          transaction.oncomplete = () => resolve(true);
+          transaction.onerror = () => resolve(false);
+        } catch(e) { resolve(false); }
+      });
+    }
+    
+    async function loadUsersFromIndexedDB() {
+      if (!useIndexedDB || !dbInstance) return null;
+      return new Promise((resolve) => {
+        try {
+          const transaction = dbInstance.transaction(['users'], 'readonly');
+          const store = transaction.objectStore('users');
+          const request = store.getAll();
+          request.onsuccess = () => {
+            const users = {};
+            if (request.result) {
+              request.result.forEach(item => { users[item.username] = item.userData; });
+            }
+            resolve(users);
+          };
+          request.onerror = () => resolve(null);
+        } catch(e) { resolve(null); }
+      });
+    }
+
+    // === HYBRID STORAGE OTOMATIS ===
+    async function simpanKeStorage() {
+      if (!activeUser) return false;
+      try {
+        let success = false;
+        if (useIndexedDB && dbInstance) {
+          success = await saveToIndexedDB(activeUser, semuaBon, pembayaran);
+        }
+        const userKeySuffix = activeUser.toLowerCase();
+        localStorage.setItem(`semuaBon_${userKeySuffix}`, JSON.stringify(semuaBon));
+        localStorage.setItem(`pembayaran_${userKeySuffix}`, JSON.stringify(pembayaran));
+        return true;
+      } catch (e) {
+        console.error("Gagal simpan:", e);
+        return false;
+      }
+    }
+    
+    async function loadData() {
+      if (!activeUser) return;
+      try {
+        let bonParsed = [];
+        let bayarParsed = [];
+        
+        if (useIndexedDB && dbInstance) {
+          const indexedData = await loadFromIndexedDB(activeUser);
+          if (indexedData && (indexedData.semuaBon.length > 0 || indexedData.pembayaran.length > 0)) {
+            bonParsed = indexedData.semuaBon;
+            bayarParsed = indexedData.pembayaran;
+          } else {
+            const userKeySuffix = activeUser.toLowerCase();
+            const storedBon = localStorage.getItem(`semuaBon_${userKeySuffix}`);
+            const storedBayar = localStorage.getItem(`pembayaran_${userKeySuffix}`);
+            bonParsed = safeParseJSON(storedBon) || [];
+            bayarParsed = safeParseJSON(storedBayar) || [];
+            if (bonParsed.length > 0 || bayarParsed.length > 0) {
+              await saveToIndexedDB(activeUser, bonParsed, bayarParsed);
+            }
+          }
+        } else {
+          const userKeySuffix = activeUser.toLowerCase();
+          const storedBon = localStorage.getItem(`semuaBon_${userKeySuffix}`);
+          const storedBayar = localStorage.getItem(`pembayaran_${userKeySuffix}`);
+          bonParsed = safeParseJSON(storedBon) || [];
+          bayarParsed = safeParseJSON(storedBayar) || [];
+        }
+        
+        semuaBon = Array.isArray(bonParsed) ? bonParsed.filter(isValidBon) : [];
+        pembayaran = Array.isArray(bayarParsed) ? bayarParsed.filter(isValidPembayaran) : [];
+        await loadHiddenBarangMap();
+      } catch (e) {
+        semuaBon = [];
+        pembayaran = [];
+      }
+    }
+    
+    // === HIDDEN BARANG MAP ===
+    let hiddenBarangMap = {};
+    
+    async function loadHiddenBarangMap() {
+      try {
+        if (useIndexedDB && dbInstance) {
+          const hiddenData = await loadHiddenFromIndexedDB(activeUser);
+          if (hiddenData) {
+            hiddenBarangMap = hiddenData;
+            return;
+          }
+        }
+        const saved = localStorage.getItem('hiddenBarangMap');
+        const parsed = safeParseJSON(saved);
+        hiddenBarangMap = parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (e) {
+        hiddenBarangMap = {};
+      }
+    }
+    
+    async function saveHiddenBarangMap() {
+      try {
+        if (useIndexedDB && dbInstance) {
+          await saveHiddenToIndexedDB(activeUser, hiddenBarangMap);
+        }
+        localStorage.setItem('hiddenBarangMap', JSON.stringify(hiddenBarangMap));
+      } catch (e) {}
+    }
+    
+    function getBarangVisible(namaPelanggan) {
+      if (!namaPelanggan) return false;
+      const key = namaPelanggan.toLowerCase();
+      return hiddenBarangMap[key] === false;
+    }
+    
+    async function toggleBarang(namaPelanggan) {
+      if (!namaPelanggan) return;
+      const key = namaPelanggan.toLowerCase();
+      const currentlyVisible = getBarangVisible(namaPelanggan);
+      hiddenBarangMap[key] = currentlyVisible;
+      await saveHiddenBarangMap();
+      renderDaftarPelanggan();
+    }
+    
+    // === AUTHENTICATION SYSTEM ===
+    let usersData = {};
+    
+    async function loadAuthData() {
+      if (useIndexedDB && dbInstance) {
+        const indexedUsers = await loadUsersFromIndexedDB();
+        if (indexedUsers) {
+          usersData = indexedUsers;
+          return;
+        }
+      }
+      const saved = localStorage.getItem('auth_users');
+      usersData = safeParseJSON(saved) || {};
+    }
+    
+    async function saveAuthData() {
+      if (useIndexedDB && dbInstance) {
+        await saveUsersToIndexedDB(usersData);
+      }
+      localStorage.setItem('auth_users', JSON.stringify(usersData));
+    }
+    
+    const REMEMBER_KEY = 'bon_remember_creds';
+    
+    function saveRememberMe() {
+      const username = document.getElementById('authUsername').value.trim();
+      const password = document.getElementById('authPassword').value.trim();
+      const isChecked = document.getElementById('rememberMeCheckbox').checked;
+      if (isChecked && username && password) {
+        localStorage.setItem(REMEMBER_KEY, JSON.stringify({ username, password }));
+      } else if (!isChecked) {
+        localStorage.removeItem(REMEMBER_KEY);
+      }
+    }
+    
+    function loadRememberMe() {
+      const saved = localStorage.getItem(REMEMBER_KEY);
+      if (saved) {
+        try {
+          const creds = JSON.parse(saved);
+          if (creds.username && creds.password) {
+            document.getElementById('authUsername').value = creds.username;
+            document.getElementById('authPassword').value = creds.password;
+            document.getElementById('rememberMeCheckbox').checked = true;
+          }
+        } catch(e) {}
+      }
+    }
+    
+    function switchAuthTab(tab) {
+      currentAuthTab = tab;
+      document.getElementById('tabLogin').classList.remove('active');
+      document.getElementById('tabRegister').classList.remove('active');
+      document.getElementById('tabForgot').classList.remove('active');
+      document.getElementById('authUsername').value = '';
+      document.getElementById('authPassword').value = '';
+      document.getElementById('qPet').value = '';
+      document.getElementById('qHobby').value = '';
+      document.getElementById('qFood').value = '';
+
+      if (tab === 'login') {
+        document.getElementById('tabLogin').classList.add('active');
+        document.getElementById('authFormTitle').innerHTML = "<h2>🔑 Masuk Aplikasi</h2>";
+        document.getElementById('labelAuthPassword').textContent = "Kata Sandi (Password):";
+        document.getElementById('btnAuthSubmit').textContent = "🔑 Masuk Sekarang";
+        document.getElementById('securityQuestionsSection').classList.add('hidden');
+        document.getElementById('rememberMeDiv').classList.remove('hidden');
+        loadRememberMe();
+      } else if (tab === 'register') {
+        document.getElementById('tabRegister').classList.add('active');
+        document.getElementById('authFormTitle').innerHTML = "<h2>✍️ Pendaftaran Akun Baru</h2>";
+        document.getElementById('labelAuthPassword').textContent = "Kata Sandi (Password):";
+        document.getElementById('btnAuthSubmit').textContent = "✍️ Daftar Akun";
+        document.getElementById('securityQuestionsSection').classList.remove('hidden');
+        document.getElementById('rememberMeDiv').classList.add('hidden');
+      } else {
+        document.getElementById('tabForgot').classList.add('active');
+        document.getElementById('authFormTitle').innerHTML = "<h2>🔄 Pulihkan & Ganti Password</h2>";
+        document.getElementById('labelAuthPassword').textContent = "Kata Sandi Baru:";
+        document.getElementById('btnAuthSubmit').textContent = "✔️ Setel Ulang Password";
+        document.getElementById('securityQuestionsSection').classList.remove('hidden');
+        document.getElementById('rememberMeDiv').classList.add('hidden');
+      }
+    }
+    
+    async function handleAuthSubmit() {
+      const u = document.getElementById('authUsername').value.trim();
+      const p = document.getElementById('authPassword').value.trim();
+      if (!u || !p) {
+        showToast("❗ Bidang teks tidak boleh kosong!", true);
+        return;
+      }
+      await loadAuthData();
+      if (currentAuthTab === 'register') {
+        const qPetVal = document.getElementById('qPet').value.trim().toLowerCase();
+        const qHobbyVal = document.getElementById('qHobby').value.trim().toLowerCase();
+        const qFoodVal = document.getElementById('qFood').value.trim().toLowerCase();
+        if (!qPetVal || !qHobbyVal || !qFoodVal) {
+          showToast("❗ Tiga pertanyaan keamanan wajib diisi!", true);
+          return;
+        }
+        if (usersData[u.toLowerCase()]) {
+          showToast("❌ Username tersebut sudah terdaftar!", true);
+          return;
+        }
+        usersData[u.toLowerCase()] = { username: u, password: p, security: { pet: qPetVal, hobby: qHobbyVal, food: qFoodVal } };
+        await saveAuthData();
+        showToast("✅ Registrasi berhasil! Silakan masuk.");
+        switchAuthTab('login');
+      } else if (currentAuthTab === 'forgot') {
+        const existingUser = usersData[u.toLowerCase()];
+        if (!existingUser) {
+          showToast("❌ Username tidak ditemukan!", true);
+          return;
+        }
+        const qPetVal = document.getElementById('qPet').value.trim().toLowerCase();
+        const qHobbyVal = document.getElementById('qHobby').value.trim().toLowerCase();
+        const qFoodVal = document.getElementById('qFood').value.trim().toLowerCase();
+        if (!existingUser.security || existingUser.security.pet !== qPetVal || existingUser.security.hobby !== qHobbyVal || existingUser.security.food !== qFoodVal) {
+          showToast("❌ Jawaban pertanyaan keamanan salah!", true);
+          return;
+        }
+        existingUser.password = p;
+        usersData[u.toLowerCase()] = existingUser;
+        await saveAuthData();
+        showToast("✅ Password berhasil diganti! Silakan masuk.");
+        switchAuthTab('login');
+      } else {
+        const existingUser = usersData[u.toLowerCase()];
+        if (!existingUser || existingUser.password !== p) {
+          showToast("❌ Username atau Password salah!", true);
+          return;
+        }
+        activeUser = existingUser.username;
+        sessionStorage.setItem('active_session_user', activeUser);
+        saveRememberMe();
+        showToast("✅ Berhasil masuk! Selamat datang.");
+        document.getElementById('authUsername').value = '';
+        document.getElementById('authPassword').value = '';
+        await checkAppSessionStatus();
+      }
+    }
+    
+    async function executeLogout() {
+      activeUser = null;
+      sessionStorage.removeItem('active_session_user');
+      semuaBon = [];
+      pembayaran = [];
+      keranjang = [];
+      hiddenBarangMap = {};
+      await checkAppSessionStatus();
+      showToast("🚪 Anda telah keluar dari aplikasi.");
+    }
+    
+    async function checkAppSessionStatus() {
+      activeUser = sessionStorage.getItem('active_session_user');
+      if (activeUser) {
+        document.getElementById('currentUsernameLabel').textContent = activeUser;
+        document.getElementById('authHeaderBar').classList.remove('hidden');
+        document.getElementById('authScreenSection').classList.add('hidden');
+        document.getElementById('mainAppSection').classList.remove('hidden');
+        await loadData();
+        renderDaftarPelanggan();
+      } else {
+        document.getElementById('authHeaderBar').classList.add('hidden');
+        document.getElementById('authScreenSection').classList.remove('hidden');
+        document.getElementById('mainAppSection').classList.add('hidden');
+        switchAuthTab('login');
+      }
+    }
+    
+    // === KERANJANG === (fungsi lengkap seperti versi sebelumnya)
+    function tambahBarangKeBon() {
+      let nama = document.getElementById('namaBarangManual').value.trim();
+      let hargaStr = document.getElementById('hargaBarangManual').value.trim();
+      let qtyStr = document.getElementById('jumlahBarangManual').value.trim();
+      if (!nama) { showToast("❗ Nama barang tidak boleh kosong!", true); return; }
+      if (!hargaStr) { showToast("❗ Harga tidak boleh kosong!", true); return; }
+      if (!qtyStr) { showToast("❗ Jumlah tidak boleh kosong!", true); return; }
+      nama = safeString(nama, 100);
+      const harga = Number(hargaStr);
+      const qty = Math.floor(Number(qtyStr));
+      if (isNaN(harga) || harga < 0) { showToast("❗ Harga harus ≥ 0!", true); return; }
+      if (isNaN(qty) || qty < 1) { showToast("❗ Jumlah harus ≥ 1!", true); return; }
+      const existing = keranjang.find(item => item.nama === nama && item.hargaSaatIni === harga);
+      if (existing) existing.qty += qty;
+      else keranjang.push({ nama, hargaSaatIni: harga, qty });
+      renderKeranjangBon();
+      document.getElementById('namaBarangManual').value = '';
+      document.getElementById('hargaBarangManual').value = '';
+      document.getElementById('jumlahBarangManual').value = '1';
+      hideAutocomplete('barang');
+    }
+    
+    function hapusBarangDariBon(index) {
+      if (index >= 0 && index < keranjang.length) keranjang.splice(index, 1);
+      renderKeranjangBon();
+    }
+    
+    function renderKeranjangBon() {
+      const div = document.getElementById('keranjangBon');
+      if (keranjang.length === 0) { div.innerHTML = '🛒 Kosong'; return; }
+      let html = '<div class="bon-barang-list">';
+      keranjang.forEach((item, index) => {
+        const qty = Math.max(item.qty, 1);
+        const subtotal = item.hargaSaatIni * qty;
+        html += `<div class="bon-barang-item"><span>${safeString(item.nama)} (x${qty})</span><div style="display:flex;align-items:center;"><span>Rp ${subtotal.toLocaleString('id-ID')}</span><button class="hapus-barang-btn" onclick="hapusBarangDariBon(${index})">🗑️</button></div></div>`;
+      });
+      html += '</div>';
+      div.innerHTML = html;
+    }
+    
+    async function simpanBonBaru() {
+      let nama = document.getElementById('namaPelanggan').value.trim();
+      if (!nama) { showToast("❗ Masukkan nama pelanggan!", true); return; }
+      if (keranjang.length === 0) { showToast("❗ Bon masih kosong!", true); return; }
+      nama = safeString(nama, 100);
+      const items = keranjang.map(item => ({ nama: safeString(item.nama), hargaSaatItu: Math.max(0, item.hargaSaatIni), qty: Math.max(item.qty || 1, 1), subtotal: (item.hargaSaatIni || 0) * (item.qty || 1) }));
+      const total = items.reduce((s, i) => s + (i.subtotal || 0), 0);
+      const bonBaru = { namaPelanggan: nama, total, items, waktu: getFullTimestamp() };
+      semuaBon.push(bonBaru);
+      if (await simpanKeStorage()) {
+        renderDaftarPelanggan();
+        keranjang = [];
+        document.getElementById('namaPelanggan').value = '';
+        renderKeranjangBon();
+        hideAutocomplete('pelanggan');
+      }
+    }
+    
+    // === EDIT NAMA, PEMBAYARAN, DLL ===
+    function bukaEditNama(namaLama) {
+      if (!namaLama) return;
+      document.getElementById('inputNamaBaru').value = namaLama;
+      document.getElementById('namaLama').value = namaLama;
+      document.getElementById('modalEditNama').classList.remove('hidden');
+    }
+    
+    async function simpanEditNama() {
+      const namaLama = document.getElementById('namaLama').value;
+      let namaBaru = document.getElementById('inputNamaBaru').value.trim();
+      if (!namaBaru) { showToast("❗ Nama tidak boleh kosong!", true); return; }
+      if (namaBaru.toLowerCase() === namaLama.toLowerCase()) { tutupModal('modalEditNama'); return; }
+      namaBaru = safeString(namaBaru, 100);
+      const lowerBaru = namaBaru.toLowerCase();
+      const exists = semuaBon.some(bon => bon.namaPelanggan.toLowerCase() === lowerBaru) || pembayaran.some(p => p.namaPelanggan.toLowerCase() === lowerBaru);
+      if (exists) { showToast("❗ Nama tersebut sudah ada!", true); return; }
+      const lowerLama = namaLama.toLowerCase();
+      semuaBon = semuaBon.map(bon => bon.namaPelanggan.toLowerCase() === lowerLama ? { ...bon, namaPelanggan: namaBaru } : bon);
+      pembayaran = pembayaran.map(p => p.namaPelanggan.toLowerCase() === lowerLama ? { ...p, namaPelanggan: namaBaru } : p);
+      if (await simpanKeStorage()) {
+        if (hiddenBarangMap[lowerLama] !== undefined) { hiddenBarangMap[lowerBaru] = hiddenBarangMap[lowerLama]; delete hiddenBarangMap[lowerLama]; await saveHiddenBarangMap(); }
+        renderDaftarPelanggan();
+        tutupModal('modalEditNama');
+      }
+    }
+    
+    async function bayarUtang(namaPelanggan) {
+      if (!namaPelanggan) return;
+      const nominal = prompt(`💰 Bayar berapa untuk ${namaPelanggan}?`);
+      if (nominal === null) return;
+      const jumlah = Number(nominal);
+      if (isNaN(jumlah) || jumlah <= 0) { showToast("❗ Nominal harus > 0!", true); return; }
+      pembayaran.push({ namaPelanggan: safeString(namaPelanggan), jumlah, waktu: getFullTimestamp() });
+      if (await simpanKeStorage()) renderDaftarPelanggan();
+    }
+    
+    async function hapusPelanggan(namaPelanggan) {
+      if (!namaPelanggan) return;
+      if (!confirm(`⚠️ Hapus SEMUA data "${namaPelanggan}"?`)) return;
+      const key = namaPelanggan.toLowerCase();
+      semuaBon = semuaBon.filter(bon => bon.namaPelanggan.toLowerCase() !== key);
+      pembayaran = pembayaran.filter(p => p.namaPelanggan.toLowerCase() !== key);
+      delete hiddenBarangMap[key];
+      await saveHiddenBarangMap();
+      if (await simpanKeStorage()) renderDaftarPelanggan();
+    }
+    
+    function buatBonBaruDariNama(namaPelanggan) {
+      if (!namaPelanggan) return;
+      document.getElementById('namaPelanggan').value = namaPelanggan;
+      document.querySelector('.main-content').scrollIntoView({ behavior: 'smooth' });
+      hideAutocomplete('pelanggan');
+    }
+    
+    // === BAGIKAN & SALIN ===
+    function generateRingkasanTeks(namaPelanggan) {
+      if (!namaPelanggan) return null;
+      const lower = namaPelanggan.toLowerCase();
+      const bonList = semuaBon.filter(bon => bon.namaPelanggan.toLowerCase() === lower);
+      const bayarList = pembayaran.filter(p => p.namaPelanggan.toLowerCase() === lower);
+      if (bonList.length === 0) return null;
+      const totalUtang = bonList.reduce((sum, bon) => sum + bon.total, 0);
+      const totalBayar = bayarList.reduce((sum, p) => sum + p.jumlah, 0);
+      const sisaUtang = totalUtang - totalBayar;
+      const lunas = sisaUtang <= 0;
+      let text = `📘 Ringkasan Utang: ${safeString(namaPelanggan)}\n\nTotal Utang: Rp ${totalUtang.toLocaleString('id-ID')}\nTotal Dibayar: Rp ${totalBayar.toLocaleString('id-ID')}\nSisa Utang: Rp ${Math.max(0, sisaUtang).toLocaleString('id-ID')}\n`;
+      if (lunas) text += sisaUtang < 0 ? `✅ LUNAS (Kembalian: Rp ${(-sisaUtang).toLocaleString('id-ID')})\n\n` : `✅ LUNAS\n\n`;
+      bonList.forEach((bon, idx) => {
+        text += `📋 Bon #${idx+1} (Total: Rp ${bon.total.toLocaleString('id-ID')})\n`;
+        bon.items.forEach(item => text += `• ${safeString(item.nama)} (x${item.qty}) = Rp ${(item.hargaSaatItu * item.qty).toLocaleString('id-ID')}\n`);
+        text += `📅 ${bon.waktu}\n\n`;
+      });
+      if (bayarList.length) {
+        text += `💰 RIWAYAT PEMBAYARAN:\n`;
+        bayarList.forEach(p => text += `• Bayar Rp ${p.jumlah.toLocaleString('id-ID')} (${p.waktu})\n`);
+      }
+      return text;
+    }
+    
+    function bukaBagikan(namaPelanggan) {
+      if (!namaPelanggan) return;
+      document.getElementById('shareNamaPelanggan').value = namaPelanggan;
+      document.getElementById('shareModal').classList.remove('hidden');
+    }
+    
+    function bagikanVia(metode) {
+      const namaPelanggan = document.getElementById('shareNamaPelanggan').value;
+      const text = generateRingkasanTeks(namaPelanggan);
+      if (!text) { showToast("❌ Tidak ada data.", true); return; }
+      const encodedText = encodeURIComponent(text.substring(0, 4000));
+      if (metode === 'whatsapp') window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+      else if (metode === 'email') window.open(`mailto:?subject=Ringkasan%20Utang%20${encodeURIComponent(namaPelanggan)}&body=${encodedText}`, '_blank');
+      else if (metode === 'sms') window.open(`sms:?body=${encodedText}`, '_blank');
+      else if (metode === 'lainnya' && navigator.share) navigator.share({ title: `Utang ${namaPelanggan}`, text: text.substring(0, 10000) }).catch(() => {});
+      else if (metode === 'lainnya') navigator.clipboard.writeText(text).then(() => showToast("✅ Teks disalin!")).catch(() => showToast("⚠️ Gagal salin", true));
+      tutupModal('shareModal');
+    }
+    
+    // Fungsi salinSemua yang diperbaiki seperti V18 - berfungsi normal
+    function salinSemua(namaPelanggan) {
+      if (!namaPelanggan) {
+        showToast("❌ Nama tidak valid.", true);
+        return;
+      }
+      const lower = namaPelanggan.toLowerCase();
+      const bonList = semuaBon.filter(bon => bon.namaPelanggan.toLowerCase() === lower);
+      const bayarList = pembayaran.filter(p => p.namaPelanggan.toLowerCase() === lower);
+      if (bonList.length === 0) {
+        showToast("❌ Tidak ada data untuk disalin.", true);
+        return;
+      }
+
+      const totalUtang = bonList.reduce((sum, bon) => sum + (typeof bon.total === 'number' ? bon.total : 0), 0);
+      const totalBayar = bayarList.reduce((sum, p) => sum + (typeof p.jumlah === 'number' ? p.jumlah : 0), 0);
+      const sisaUtang = totalUtang - totalBayar;
+      const kembalian = sisaUtang < 0 ? -sisaUtang : 0;
+      const lines = [];
+      lines.push(`nama : ${safeString(namaPelanggan)}`);
+      lines.push(`Total Utang: Rp ${totalUtang.toLocaleString('id-ID')}`);
+      lines.push(`Sudah Dibayar: Rp ${totalBayar.toLocaleString('id-ID')}`);
+      lines.push(`Sisa Utang: Rp ${Math.max(0, sisaUtang).toLocaleString('id-ID')}`);
+      if (kembalian > 0) {
+        lines.push(`Kembalian: Rp ${kembalian.toLocaleString('id-ID')}`);
+      }
+      lines.push(`Detail Barang:`);
+      bonList.forEach(bon => {
+        if (Array.isArray(bon.items)) {
+          bon.items.forEach(item => {
+            if (item && typeof item.nama === 'string') {
+              const qty = (typeof item.qty === 'number' && item.qty > 0) ? item.qty : 1;
+              const subtotal = typeof item.subtotal === 'number' ? item.subtotal :
+                              (typeof item.hargaSaatItu === 'number' ? item.hargaSaatItu * qty : 0);
+              lines.push(`${safeString(item.nama)} (x${qty}) = Rp ${subtotal.toLocaleString('id-ID')}`);
+            }
+          });
+        }
+      });
+
+      const text = lines.join('\n').substring(0, 10000);
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast("✅ Teks disalin ke clipboard!");
+        }).catch(() => fallbackCopyText(text));
+      } else {
+        fallbackCopyText(text);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        const success = document.execCommand('copy');
+        if (success) {
+          showToast("✅ Teks disalin ke clipboard!");
+        } else {
+          throw new Error('Gagal');
+        }
+      } catch (err) {
+        showToast("⚠️ Salin manual: tekan & tahan teks di atas.", true);
+      }
+      document.body.removeChild(textarea);
+    }
+    
+    // === AUTOCOMPLETE ===
+    function showAutocomplete(type) {
+      const inputId = type === 'pelanggan' ? 'namaPelanggan' : 'namaBarangManual';
+      const listId = type === 'pelanggan' ? 'autocompleteListPelanggan' : 'autocompleteListBarang';
+      const input = document.getElementById(inputId);
+      const query = input.value.trim().toLowerCase();
+      const autocompleteList = document.getElementById(listId);
+      if (!autocompleteList) return;
+      autocompleteList.innerHTML = '';
+      if (query.length === 0 || query.length > 50) { autocompleteList.classList.add('hidden'); return; }
+      const seen = new Set();
+      const uniqueItems = [];
+      if (type === 'pelanggan') semuaBon.forEach(bon => { if (bon.namaPelanggan && !seen.has(bon.namaPelanggan.toLowerCase())) { seen.add(bon.namaPelanggan.toLowerCase()); uniqueItems.push(bon.namaPelanggan); } });
+      else semuaBon.forEach(bon => bon.items.forEach(item => { if (item.nama && !seen.has(item.nama.toLowerCase())) { seen.add(item.nama.toLowerCase()); uniqueItems.push(item.nama); } }));
+      const filteredItems = uniqueItems.filter(name => name.toLowerCase().includes(query)).sort();
+      if (filteredItems.length === 0) { autocompleteList.classList.add('hidden'); return; }
+      filteredItems.forEach(name => {
+        const item = document.createElement('div');
+        item.className = 'autocomplete-item';
+        const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        item.innerHTML = name.replace(regex, '<span class="autocomplete-highlight">$1</span>');
+        item.addEventListener('click', () => { input.value = name; autocompleteList.classList.add('hidden'); input.focus(); if (type === 'barang') fillHargaBarang(name); });
+        autocompleteList.appendChild(item);
+      });
+      autocompleteList.classList.remove('hidden');
+    }
+    
+    function hideAutocomplete(type) { const el = document.getElementById(type === 'pelanggan' ? 'autocompleteListPelanggan' : 'autocompleteListBarang'); if (el) el.classList.add('hidden'); }
+    
+    function fillHargaBarang(namaBarang) {
+      if (!namaBarang) return;
+      for (let i = semuaBon.length-1; i >= 0; i--) {
+        const item = semuaBon[i]?.items?.find(it => it.nama === namaBarang);
+        if (item && item.hargaSaatItu > 0) { document.getElementById('hargaBarangManual').value = item.hargaSaatItu; break; }
+      }
+    }
+    
+    document.addEventListener('click', (e) => { if (!e.target.closest('.autocomplete-container')) { hideAutocomplete('pelanggan'); hideAutocomplete('barang'); } });
+    
+    // === RENDER ===
+    function filterPelanggan() { renderDaftarPelanggan(); }
+    
+    function renderDaftarPelanggan() {
+      const div = document.getElementById('daftarPelanggan');
+      const query = document.getElementById('cariPelanggan').value.trim().toLowerCase();
+      const validBon = semuaBon.filter(isValidBon);
+      if (validBon.length === 0) { div.innerHTML = '👥 Belum ada yang ngebon.'; document.getElementById('jumlahBarang').textContent = '0'; return; }
+      let totalQty = 0;
+      validBon.forEach(bon => bon.items.forEach(item => { if (item.qty) totalQty += item.qty; }));
+      document.getElementById('jumlahBarang').textContent = totalQty;
+      const pelangganMap = {};
+      validBon.forEach(bon => { const key = bon.namaPelanggan.toLowerCase(); if (!pelangganMap[key]) pelangganMap[key] = { namaAsli: bon.namaPelanggan, totalUtang: 0, bonList: [] }; pelangganMap[key].totalUtang += bon.total; pelangganMap[key].bonList.push(bon); });
+      const totalBayar = {};
+      pembayaran.filter(isValidPembayaran).forEach(p => { const key = p.namaPelanggan.toLowerCase(); totalBayar[key] = (totalBayar[key] || 0) + p.jumlah; });
+      const filteredPelanggan = Object.values(pelangganMap).filter(p => p.namaAsli.toLowerCase().includes(query));
+      if (filteredPelanggan.length === 0) { div.innerHTML = '🔍 Tidak ditemukan.'; return; }
+      let html = '';
+      filteredPelanggan.forEach(p => {
+        const key = p.namaAsli.toLowerCase();
+        const totalDibayar = totalBayar[key] || 0;
+        const sisaUtang = p.totalUtang - totalDibayar;
+        const lunas = sisaUtang <= 0;
+        let statusText = lunas ? (totalDibayar - p.totalUtang > 0 ? `<span class="status-lunas">✅ LUNAS (Kembalian: Rp ${(totalDibayar - p.totalUtang).toLocaleString('id-ID')})</span>` : `<span class="status-lunas">✅ LUNAS</span>`) : '';
+        let content = `<strong>Nama: ${safeString(p.namaAsli)}</strong><button class="edit-nama-btn" onclick='bukaEditNama("${p.namaAsli.replace(/"/g, '&quot;')}")'>✏️</button><br>Total Utang: Rp ${p.totalUtang.toLocaleString('id-ID')}<br>Sudah Dibayar: Rp ${totalDibayar.toLocaleString('id-ID')}<br><strong>Sisa Utang: Rp ${Math.max(0, sisaUtang).toLocaleString('id-ID')}</strong> ${statusText}<br><br>`;
+        if (getBarangVisible(p.namaAsli)) {
+          p.bonList.forEach((bon, idx) => {
+            let itemsList = '';
+            if (bon.items) itemsList = bon.items.map(item => `• ${safeString(item.nama)} (x${item.qty}) = Rp ${(item.hargaSaatItu * item.qty).toLocaleString('id-ID')}`).join('<br>');
+            if (itemsList) content += `<div style="margin-top:12px; padding-top:10px; border-top:1px dashed #c3dafe;"><strong>Bon #${idx+1} (Total: Rp ${bon.total.toLocaleString('id-ID')})</strong><br>${itemsList}<div class="bon-timestamp">📅 ${bon.waktu}</div></div>`;
+          });
+        }
+        const riwayatBayar = pembayaran.filter(pay => pay.namaPelanggan.toLowerCase() === key).map(pb => `<div class="timestamp">💰 Bayar: Rp ${pb.jumlah.toLocaleString('id-ID')} (${pb.waktu})</div>`).join('');
+        if (riwayatBayar) content += `<br><strong>Riwayat Pembayaran:</strong><br>${riwayatBayar}`;
+        html += `<div class="pelanggan-item" style="${lunas ? 'border-left-color:#48bb78;background:linear-gradient(135deg,#f0fff4,#e6fffa);' : ''}">${content}<div class="action-buttons"><button class="btn-bon-baru" onclick='buatBonBaruDariNama("${p.namaAsli.replace(/"/g, '&quot;')}")'>📄 Bon Baru</button><button class="btn-bayar" onclick='bayarUtang("${p.namaAsli.replace(/"/g, '&quot;')}")'>💰 Bayar</button><button class="btn-hapus" onclick='hapusPelanggan("${p.namaAsli.replace(/"/g, '&quot;')}")'>🗑️ Hapus</button><button class="btn-share" onclick='bukaBagikan("${p.namaAsli.replace(/"/g, '&quot;')}")'>📤 Bagikan</button><button class="btn-salin salin-semua-btn" onclick='salinSemua("${p.namaAsli.replace(/"/g, '&quot;')}")'>📋 Salin Semua</button><button class="btn-salin" onclick='toggleBarang("${p.namaAsli.replace(/"/g, '&quot;')}")'>👁️ ${getBarangVisible(p.namaAsli) ? 'Sembunyikan' : 'Tampilkan'} Barang</button></div></div>`;
+      });
+      div.innerHTML = html;
+    }
+    
+    function tutupModal(id) { const el = document.getElementById(id); if (el) el.classList.add('hidden'); }
+    
+    // === EKSPOR KE JSON ===
+    function eksporKeJson() {
+      if (!activeUser) return;
+      const data = { username: activeUser, semuaBon, pembayaran, versi: "BON-v21", exportDate: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `bon-utang-${activeUser}-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+      showToast("✅ File JSON berhasil diunduh!");
+    }
+    
+    function simpanKeGoogleDrive() {
+      if (!activeUser) return;
+      const data = { username: activeUser, semuaBon, pembayaran, versi: "BON-v21" };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `bon-utang-${activeUser}-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a); a.click(); window.open('https://drive.google.com/drive/my-drive', '_blank');
+      document.body.removeChild(a); URL.revokeObjectURL(url);
+      showToast("✅ File siap! Simpan ke Google Drive.");
+    }
+    
+    async function imporData(file) {
+      if (!activeUser || !file) return;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        try {
+          const data = safeParseJSON(e.target.result);
+          if (!data) throw new Error("JSON tidak valid");
+          let importedBon = [], importedBayar = [];
+          if (Array.isArray(data.semuaBon) && Array.isArray(data.pembayaran)) { importedBon = data.semuaBon.filter(isValidBon); importedBayar = data.pembayaran.filter(isValidPembayaran); }
+          else if (Array.isArray(data)) importedBon = data.filter(isValidBon);
+          else throw new Error("Format tidak sesuai");
+          if (importedBon.length === 0 && importedBayar.length === 0) throw new Error("Tidak ada data valid");
+          semuaBon = importedBon; pembayaran = importedBayar;
+          if (await simpanKeStorage()) { renderDaftarPelanggan(); showToast(`✅ Berhasil mengimpor ${importedBon.length} bon dan ${importedBayar.length} pembayaran!`); }
+        } catch (err) { showToast("❌ File tidak valid atau rusak.", true); }
+        document.getElementById('imporJson').value = '';
+      };
+      reader.onerror = () => { showToast("❌ Gagal membaca file.", true); document.getElementById('imporJson').value = ''; };
+      reader.readAsText(file);
+    }
+    
+    // === INIT ===
+    async function init() {
+      await initIndexedDB();
+      await checkAppSessionStatus();
+    }
+    init();
+  </script>
+</body>
+</html>
