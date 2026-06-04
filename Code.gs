@@ -16,7 +16,7 @@
 // Cara mendapatkan: Buka spreadsheet -> lihat URL -> ambil ID antara /d/ dan /edit
 // Contoh: https://docs.google.com/spreadsheets/d/1ABC123DEF456/edit -> ID = 1ABC123DEF456
 // Ganti dengan ID spreadsheet Anda sendiri!
-const SPREADSHEET_ID = '1ABC123DEF456'; // <-- WAJIB DIUBAH dengan ID Spreadsheet Anda!
+const SPREADSHEET_ID = '1CUUbyDsEgFFUwHmuSTL73gOJYXXtN2cADDYygpc4U5g/edit?gid=0#gid=0'; // <-- WAJIB DIUBAH dengan ID Spreadsheet Anda!
 
 // Nama-nama sheet yang akan dibuat secara otomatis
 const SHEET_USERS = 'Users';           // Menyimpan data akun pengguna
