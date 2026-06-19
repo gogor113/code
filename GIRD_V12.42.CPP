@@ -31,7 +31,7 @@ input group "== MAIN SETTINGS =="
 input ENUM_TRADE_MODE Trade_Mode = MODE_BOTH;
 input double InitialLot = 0.01;
 input double LotStep = 0.01;
-input int OrdersPerStep = 55;
+input int OrdersPerStep = 77;
 input int EMAPeriod = 1;
 
 input group "== PRICE TRIGGER & AUTO SWITCH =="
@@ -40,9 +40,9 @@ input double Auto_Switch_Price = 0.0;
 input ENUM_TRADE_MODE Target_Mode_After_Switch = MODE_BOTH;
 
 input group "== PURE LINEAR SETTINGS (PHASE 2) =="
-input int PureLinearStep = 155;
+input int PureLinearStep = 255;
 input double PureLinearLotAdd = 0.02;
-input int PureLinearInterval = 55;      
+input int PureLinearInterval = 77;      
 
 input group "== GRID LOGIC =="
 input int StepPoints = 555;
@@ -308,7 +308,7 @@ void OnTradeTransaction(const MqlTradeTransaction& trans,
 }
 
 //+------------------------------------------------------------------+
-//| ManageLatestPositionTrailing - Independent Dual Trailing        |
+//| ManageLatestPositionTrailing - Upgraded Mode-Compliant Trailing  |
 //+------------------------------------------------------------------+
 void ManageLatestPositionTrailing(MqlTick &t) {
    if(PositionsTotal() == 0) return;
@@ -353,29 +353,37 @@ void ManageLatestPositionTrailing(MqlTick &t) {
             double pO = PositionGetDouble(POSITION_PRICE_OPEN);
             ENUM_POSITION_TYPE type = (ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE);
             double point = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
+            
             if(type == POSITION_TYPE_BUY) {
-               if(ticket != newestBuyTicket) {
-                  if(pS != 0) trade.PositionModify(ticket, 0, 0);
-               } else if(profitBuy > 0) { 
-                  if(t.bid - pO >= TrailingStartPoints * point) {
-                     double nS = NormalizeDouble(t.bid - TrailingStepPoints * point, _Digits);
-                     if(pS == 0 || nS > pS) {
-                        trade.PositionModify(ticket, nS, 0);
+               if(currentTradeMode == MODE_BOTH || currentTradeMode == MODE_BUY_ONLY) {
+                  if(ticket != newestBuyTicket) {
+                     if(pS != 0) trade.PositionModify(ticket, 0, 0);
+                  } else if(profitBuy > 0) { 
+                     if(t.bid - pO >= TrailingStartPoints * point) {
+                        double nS = NormalizeDouble(t.bid - TrailingStepPoints * point, _Digits);
+                        if(pS == 0 || nS > pS) {
+                           trade.PositionModify(ticket, nS, 0);
+                        }
                      }
                   }
+               } else {
+                  if(pS != 0) trade.PositionModify(ticket, 0, 0);
                }
             }
             else if(type == POSITION_TYPE_SELL) {
-               if(ticket != newestSellTicket) {
-                  if(pS != 0) 
-                     trade.PositionModify(ticket, 0, 0);
-               } else if(profitSell > 0) { 
-                  if(pO - t.ask >= TrailingStartPoints * point) {
-                     double nS = NormalizeDouble(t.ask + TrailingStepPoints * point, _Digits);
-                     if(pS == 0 || nS < pS) {
-                        trade.PositionModify(ticket, nS, 0);
+               if(currentTradeMode == MODE_BOTH || currentTradeMode == MODE_SELL_ONLY) {
+                  if(ticket != newestSellTicket) {
+                     if(pS != 0) trade.PositionModify(ticket, 0, 0);
+                  } else if(profitSell > 0) { 
+                     if(pO - t.ask >= TrailingStartPoints * point) {
+                        double nS = NormalizeDouble(t.ask + TrailingStepPoints * point, _Digits);
+                        if(pS == 0 || nS < pS) {
+                           trade.PositionModify(ticket, nS, 0);
+                        }
                      }
                   }
+               } else {
+                  if(pS != 0) trade.PositionModify(ticket, 0, 0);
                }
             }
          }
