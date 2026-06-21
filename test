@@ -252,7 +252,7 @@ void OnTick() {
    //--- EKSEKUSI BUY ORDER (INDEPENDENT GRID WITH 500MS DELAY FROM SELL)
    if((currentTradeMode == MODE_BOTH || currentTradeMode == MODE_BUY_ONLY) && !buyCycleCompleted) {
       if(buyCount == 0) {
-         if(current_time_ms - lastSellOrderTimeMS >= 500 && current_time_ms - lastBuyOrderTimeMS >= 1000) {
+         if(current_time_ms - lastSellOrderTimeMS >= 100 && current_time_ms - lastBuyOrderTimeMS >= 100) {
             if(!IsPriceTooClose(t.ask, AntiStackDist, POSITION_TYPE_BUY)) {
                if(CalibratedExecute(ORDER_TYPE_BUY, InitialLot, "GGR-START-BUY")) {
                   lastBuyOrderTimeMS = current_time_ms;
@@ -267,10 +267,10 @@ void OnTick() {
       }
    }
 
-   //--- EKSEKUSI SELL ORDER (INDEPENDENT GRID WITH 500MS DELAY FROM BUY)
+   //--- EKSEKUSI SELL ORDER (INDEPENDENT GRID WITH 100MS DELAY FROM BUY)
    if((currentTradeMode == MODE_BOTH || currentTradeMode == MODE_SELL_ONLY) && !sellCycleCompleted) {
       if(sellCount == 0) {
-         if(current_time_ms - lastBuyOrderTimeMS >= 100 && current_time_ms - lastSellOrderTimeMS >= 1000) {
+         if(current_time_ms - lastBuyOrderTimeMS >= 100 && current_time_ms - lastSellOrderTimeMS >= 100) {
             if(!IsPriceTooClose(t.bid, AntiStackDist, POSITION_TYPE_SELL)) {
                if(CalibratedExecute(ORDER_TYPE_SELL, InitialLot, "GGR-START-SELL")) {
                   lastSellOrderTimeMS = current_time_ms;
